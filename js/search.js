@@ -1,34 +1,50 @@
-// let input = document.querySelector(".pole");
-// let btn2 = document.querySelector(".btn2");
-// console.log(input,btn2)
-// btn2.onclick=function(){                         //клик по кнопке
-    //     alert(input.value);
-    // }
- import { Pokemon } from "./classes.js";
- import { fillPokemonCard, getPokemonByNameOrId  } from "./const.js";  
-  const form = document.querySelector(".search");
-    form.addEventListener('submit', async (event) => { 
-        event.preventDefault();
+import { fillPokemonCard, getPokemonByNameOrId } from './const.js';
+import { Pokemon } from './classes.js';
+import { basket } from './addRandom.js';
+const form = document.querySelector('.search');
+
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const {
+        pokemonName: { value },
+    } = event.target;
+ 
+    if (!value) {
+        alert('Введите имя покемона плиииз');
+    } else {
         try {
-            const 
-            {pokemonName:{value}}
-         = event.target;
-         if(!value || value.trim() === ""){
-             alert("Введите имя покемона без пробелов!!!")
-         }
-           const pokemon = await getPokemonByNameOrId(value.toLowerCase());
-           fillPokemonCard(pokemon);
-         } catch (error) {
-           throw alert(`Такого покемона нет.`)            
+            const pokemon = await getPokemonByNameOrId(value.toLowerCase());
+            fillPokemonCard(pokemon);
+         basket.push(pokemon);
+         localStorage.setItem("pokemon",JSON.stringify(basket));
+        } catch (error) {
+            alert(error.message);
         }
+    }
     })
-    
-    
-    //     const input = event.target.querySelector("input")  
-    // alert(`👉${input.value}👈`);
-    // });
-    // document.addEventListener('keydown', (event) {  // нажатие enter
-    //     if (event.code == 'Enter') {
-    //         alert(`👉${input.value}👈`);
-    //     }
-    // });
+
+        // fetch(`https://pokeapi.co/api/v2/pokemon/${value.toLowerCase()}`)
+        //     .then((response) => response.json())
+        //     .then((result) => {
+        //         const {
+        //             name,
+        //             base_experience: experience,
+        //             // abilities,
+        //             abilities: rawAbilities,
+        //             sprites: { front_default: image },
+        //             // sprites: { front_default },
+        //         } = result;
+        //         const serailizedAbilities = rawAbilities.map((el) => {
+        //             const {
+        //                 ability: { name },
+        //             } = el;
+        //             return name;
+        //         });
+        //         const pokemon = new Pokemon(name, serailizedAbilities, experience, image);
+        //         fillPokemonCard(pokemon);
+        //     })
+        //     .catch((err) => {
+        //         alert('Такого покемона нет' + err.message);
+        //     });
+//     }
+// 
